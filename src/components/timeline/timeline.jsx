@@ -19,7 +19,7 @@ Collector in JAVA" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
   <p><h3>Jan 2020 - Jun 2020 | Nabeul | DigiArt LivingLab</h3>● Graduation Project Internship <br/>
   Planning, Design and
 Development of a solution in
-Mixed Reality (AR-VR) using the Unreal Engine
+Mixed Reality (AR-VR) using the Unreal
 Engine 4 dedicated to children with the
 autism syndrome as well as
 their parents.</p>
