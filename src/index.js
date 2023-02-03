@@ -1,27 +1,27 @@
-import ReactDOM from 'react-dom';
-import './style.css';
-import WebContent from './app';
+import ReactDOM from "react-dom";
+import "./style.css";
+import WebContent from "./app";
 
-ReactDOM.render(<WebContent />, document.getElementById('root'));
+ReactDOM.render(<WebContent />, document.getElementById("root"));
 
-const toggle = document.querySelector('.hover-show');
+const toggle = document.querySelector(".hover-show");
 
-toggle.addEventListener('click', () => {
-  toggle.classList.toggle('active');
+toggle.addEventListener("click", () => {
+  toggle.classList.toggle("active");
 });
 
-let Icons = document.querySelectorAll('.navigation .icon');
+let Icons = document.querySelectorAll(".navigation .icon");
 
 Icons.forEach((icon) => {
-  icon.addEventListener('click', () => {
+  icon.addEventListener("click", () => {
     changeactive();
 
-    icon.classList.add('active-nav');
+    icon.classList.add("active-nav");
   });
 });
 
 function changeactive() {
   Icons.forEach((icon) => {
-    icon.classList.remove('active-nav');
+    icon.classList.remove("active-nav");
   });
 }

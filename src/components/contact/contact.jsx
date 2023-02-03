@@ -31,15 +31,22 @@ function Contact() {
           </h2>
         </a>
 
-        <a href="https://www.facebook.com/DhiaMaiez/" className="contact facebook" target={"blank"}>
+        <a
+          href="https://www.facebook.com/DhiaMaiez/"
+          className="contact facebook"
+          target={"blank"}
+        >
           <AiOutlineFacebook className="icon" />
           <h2>
             facebook <span>Ahmed Maiez</span>
           </h2>
-        </a> 
+        </a>
 
-
-        <a href="https://github.com/AhmedMaiez-am" className="contact github" target={"blank"}>
+        <a
+          href="https://github.com/AhmedMaiez-am"
+          className="contact github"
+          target={"blank"}
+        >
           <AiOutlineGithub className="icon" />
           <h2>
             github <span>AhmedMaiez-am</span>

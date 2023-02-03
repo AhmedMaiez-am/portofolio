@@ -17,7 +17,10 @@ function Footer() {
         </a>
       </h1>
       <div className="social-links">
-        <a href="https://www.linkedin.com/in/maiez-ahmed-dhia-eddine-b75ba4180/" target={"blank"}>
+        <a
+          href="https://www.linkedin.com/in/maiez-ahmed-dhia-eddine-b75ba4180/"
+          target={"blank"}
+        >
           <BsLinkedin className="social" />
         </a>
         <a href="https://www.facebook.com/DhiaMaiez/" target={"blank"}>
@@ -25,7 +28,10 @@ function Footer() {
           <FaFacebookF className="social" />
         </a>
 
-        <a href="https://api.whatsapp.com/send?phone=21653874245&text=Hi" target={"blank"}>
+        <a
+          href="https://api.whatsapp.com/send?phone=21653874245&text=Hi"
+          target={"blank"}
+        >
           <BsWhatsapp className="social" />
         </a>
 
