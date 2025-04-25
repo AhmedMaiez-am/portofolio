@@ -98,7 +98,7 @@
 .home-container .logo .hover-show.active .circle:nth-child(6) {
   position: absolute;
   transform: translateX(-150%) translateY(150%);
-  background: url(../props/angular.png);
+  background: url(../props/business-central-logo.png);
   background-size: cover;
   background-position: center;
 }

@@ -9,6 +9,10 @@ const Qualifications = () => {
         </h2>
       </main>
       <ul class="tilesWrap">
+      <li>
+          <h3>Microsoft Business Central</h3>
+          <button>★ ★ ★ ★ ★</button>
+        </li>
         <li>
           <h2>React</h2>
           <button>★ ★ ★ ★ ★</button>

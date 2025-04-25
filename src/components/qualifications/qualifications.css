@@ -46,6 +46,15 @@ main h2 {
   right: 10px;
   transition: all 0.3s ease-in-out;
 }
+.tilesWrap li h3 {
+  font-size: 20px;
+  margin: 0;
+  position: absolute;
+  opacity: 0.5;
+  top: 30px;
+  right: 10px;
+  transition: all 0.3s ease-in-out;
+}
 
 .tilesWrap li button {
   background: transparent;
@@ -84,6 +93,10 @@ main h2 {
   opacity: 1;
 }
 .tilesWrap li:hover h2 {
+  top: 3px;
+  opacity: 1;
+}
+.tilesWrap li:hover h3 {
   top: 3px;
   opacity: 1;
 }
@@ -152,4 +165,7 @@ main h2 {
 }
 .tilesWrap li:nth-child(15):before {
   background: linear-gradient(to right, #00ff22, #fcf8f981);
+}
+.tilesWrap li:nth-child(16):before {
+  background: linear-gradient(to right, #00ff7b, #fcf8f981);
 }

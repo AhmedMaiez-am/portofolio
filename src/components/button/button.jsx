@@ -9,6 +9,7 @@ function Buttons() {
       <a href="#contact" className="btn sec">
         Get in Touch
       </a>
+      
     </div>
   );
 }

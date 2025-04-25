@@ -10,7 +10,7 @@ function Header() {
         Ahmed
       </h3>
       <h2>
-        A passionate Web Developer who loves building apps, collaborating and
+        A passionate Web Developer / Microsoft Dynamics 365 Business Central Consultant who loves building apps, extending business solutions, collaborating and
         keeping up with trends.
       </h2>
       <br />
