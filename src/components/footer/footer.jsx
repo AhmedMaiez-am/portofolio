@@ -18,7 +18,7 @@ function Footer() {
       </h1>
       <div className="social-links">
         <a
-          href="https://www.linkedin.com/in/maiez-ahmed-dhia-eddine-b75ba4180/"
+          href="https://www.linkedin.com/in/ahmed-dhia-eddine-maiez-b75ba4180/"
           target={"blank"}
         >
           <BsLinkedin className="social" />
