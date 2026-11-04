@@ -1,15 +1,28 @@
 import { useState, useEffect, useRef, useContext, createContext } from "react";
 import { AiOutlineLinkedin, AiOutlineWhatsApp, AiOutlineGithub, AiOutlineFacebook, AiOutlineSearch } from "react-icons/ai";
-import { FiMoon, FiSun, FiArrowUp } from "react-icons/fi";
-import photo from "./props/profilePicNoBG.png";
+import { FiMoon, FiSun, FiArrowUp, FiVolume2, FiVolumeX, FiHome, FiBriefcase, FiCode, FiFolder, FiMail, FiDownload, FiCalendar } from "react-icons/fi";
+import photo from "./props/profile.webp";
 
-// Check the LinkedIn slug: your old site used two different ones.
 const LINKS = {
-  linkedin: "https://www.linkedin.com/in/ahmed-dhia-eddine-maiez-b75ba4180/",
+  linkedin: "https://www.linkedin.com/in/maiez-ahmed-dhia-eddine-b75ba4180/",
   github: "https://github.com/AhmedMaiez-am",
   whatsapp: "https://api.whatsapp.com/send?phone=21653874245&text=Hi",
   facebook: "https://www.facebook.com/DhiaMaiez/",
+  email: "mailto:ahmedmaiez98@gmail.com",
 };
+
+const sfx = { on: false, ctx: null };
+function beep(f = 520, d = 0.06) {
+  if (!sfx.on) return;
+  try {
+    sfx.ctx = sfx.ctx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = sfx.ctx.createOscillator(), g = sfx.ctx.createGain();
+    o.frequency.value = f; g.gain.value = 0.04;
+    o.connect(g); g.connect(sfx.ctx.destination); o.start(); o.stop(sfx.ctx.currentTime + d);
+  } catch (e) {}
+}
+const vibe = () => { if (sfx.on && navigator.vibrate) navigator.vibrate(18); };
+const BOOKING_URL = ""; // paste your Cal.com or Calendly link here
 
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
@@ -31,18 +44,23 @@ const TILES = [
 ];
 
 const LEDGER = [
-  { date: "Jul 2023 to now", type: "Job", title: "Business Central Consultant", place: "Smart Business Solution, Tunis", open: true,
-    more: ["Custom fields and page extensions, including purchase lines generated automatically from free quantities.",
-      "Codeunit procedures for vehicle fuel consumption by vehicle type and mileage.",
-      "Report datasets with added fields and multi-select filters for trip reports.",
-      "Integrations that consume external APIs and post their data into Business Central and NAV."] },
-  { date: "2023", type: "Education", title: "Engineering degree, web development", place: "ESPRIT, Tunis", more: ["Projects in MERN, Symfony, JavaFX and a full DevOps pipeline."] },
-  { date: "Jan to Jun 2023", type: "Graduation project", title: "Web platform connected to Business Central", place: "Smart Business Solution, Tunis", more: ["Sales order placement and invoicing from the web, synced with the ERP."] },
-  { date: "Jul to Sep 2022", type: "Internship", title: "Task and resource management app", place: "Tunisia Smart Technoparks, Tunis", more: ["Built for the municipality of Ras Jebel."] },
-  { date: "Jan to Jun 2020", type: "Graduation project", title: "Mixed reality in Unreal Engine 4", place: "DigiArt LivingLab, Nabeul", more: ["AR and VR solution for children with autism and their parents."] },
-  { date: "Jan to Feb 2019", type: "Internship", title: "Serious game: Garbage Collector in Java", place: "DigiArt LivingLab, Nabeul", more: ["Gamified teaching of Java memory concepts."] },
-  { date: "Jan 2018", type: "Internship", title: "Introductory internship", place: "STB Bank, Ras Jebel", more: [] },
-  { date: "2017", type: "Education", title: "Bachelor's degree in Technical Science", place: "Mohamed Ali Ennabi High School, Ras Jebel", more: [] },
+  { date: "Jul 2023 to now", type: "Job", k: "work", title: "Business Central Consultant", place: "Smart Business Solution, Tunis", open: true,
+    more: ["Custom solutions for purchasing and sales: pricing, free-quantity rules, request lines and workflows.",
+      "Multi-level item classification and mapping for simpler navigation of item data.",
+      "Fleet and transport features: operational tracking, reporting, vehicle data and fuel logic.",
+      "REST and OData integrations that consume external APIs and post their data into Business Central and NAV, including automotive manufacturer data.",
+      "E-invoicing and e-reporting: accounting documents, structured XML files and external platforms.",
+      "Navision to Business Central migrations with code adaptation and data integrity checks, across multi-company and multi-environment setups.",
+      "ERP-web interfaces in React, Node.js and MongoDB, deployed on Windows Server with PM2.",
+      "User training, plus corrective and evolutive maintenance."] },
+  { date: "2020 to 2023", type: "Education", k: "edu", title: "Engineering degree, web development", place: "ESPRIT, Tunis", more: ["Graduated with honors (Très Bien).", "Projects in MERN, Symfony, JavaFX and a full DevOps pipeline."] },
+  { date: "Jan to Jun 2023", type: "Graduation project", k: "project", title: "Web platform connected to Business Central", place: "Smart Business Solution, Tunis", more: ["Sales order placement and invoicing from the web, synced with the ERP."] },
+  { date: "Jul to Sep 2022", type: "Internship", k: "intern", title: "Task and resource management app", place: "Tunisia Smart Technoparks, Tunis", more: ["Built for the municipality of Ras Jebel."] },
+  { date: "Jan to Jun 2020", type: "Graduation project", k: "project", title: "Mixed reality in Unreal Engine 4", place: "DigiArt LivingLab, Nabeul", more: ["AR and VR solution for children with autism and their parents."] },
+  { date: "2017 to 2020", type: "Education", k: "edu", title: "Higher technician diploma, software development", place: "ISET Nabeul", more: ["Graduated with honors (Très Bien)."] },
+  { date: "Jan to Feb 2019", type: "Internship", k: "intern", title: "Serious game: Garbage Collector in Java", place: "DigiArt LivingLab, Nabeul", more: ["Gamified teaching of Java memory concepts."] },
+  { date: "Jan 2018", type: "Internship", k: "intern", title: "Introductory internship", place: "STB Bank, Ras Jebel", more: [] },
+  { date: "2017", type: "Education", k: "edu", title: "Bachelor's degree in Technical Science", place: "Mohamed Ali Ennabi High School, Ras Jebel", more: [] },
 ];
 
 const PROJECTS = [
@@ -56,7 +74,7 @@ const PROJECTS = [
 const COMMANDS = [
   ["What I build", "build"], ["AL code", "code"], ["Run a codeunit", "code"], ["Business Central work", "bcwork"],
   ["Experience", "ledger"], ["Projects", "projects"], ["Contact Ahmed", "contact"], ["Hire Ahmed", "contact"],
-  ["Post a sales invoice", "top"], ["Toolbox", "toolbox"], ["Switch theme", "@theme"], ["Show error", "@error"],
+  ["Post a sales invoice", "top"], ["Toolbox", "toolbox"], ["Switch theme", "@theme"], ["Show error", "@error"], ["Open terminal", "@term"],
 ];
 
 const BCWORK = [
@@ -66,6 +84,7 @@ const BCWORK = [
   ["Version 17 to 25 migration", "Upgrade", ["On-premise upgrade to current Business Central", "Customizations moved forward to the new version"], ["Upgrade", "AL", "On-premise"]],
   ["Multi-section RDLC report", "Reporting", ["Built on NAV 2018 in C/AL", "Vendor receipts, invoices and unmatched entries in one report"], ["RDLC", "C/AL", "NAV 2018"]],
   ["On-premises and cloud setup", "Infrastructure", ["5+ on-premises servers set up", "Certificates, authentication, IIS and service tiers", "Extensions delivered on cloud tenants too"], ["IIS", "SSL", "Cloud", "On-premises"]],
+  ["E-invoicing and e-reporting", "Compliance", ["Accounting documents turned into structured XML files", "Interfaces with external platforms"], ["XML", "AL", "E-invoicing"]],
   ["External API integrations", "Integration", ["Consume external REST APIs from AL and C/AL", "Post the received data into Business Central and NAV", "Used on cloud and on-premises"], ["REST", "AL", "C/AL"]],
   ["Purchase module improvements", "Process", ["Fixes driven by a client audit report", "Purchase lines generated from free quantities"], ["AL", "Purchasing"]],
 ];
@@ -210,8 +229,9 @@ function CodeShow() {
 }
 
 const TOOLS = [
-  ["Business Central", ["AL", "C/AL", "API pages", "REST and SOAP", "RDLC reports", "Extensions and events", "Upgrades", "External APIs", "Cloud and on-premises", "IIS and SSL"]],
+  ["Business Central", ["AL", "C/AL", "API pages", "REST and SOAP", "RDLC reports", "Extensions and events", "Upgrades", "External APIs", "OData", "E-invoicing and XML", "Cloud and on-premises", "IIS, SSL and PM2"]],
   ["Web", ["React", "Node.js", "MongoDB", "JavaScript", "TypeScript", "HTML and CSS", "Angular", "Laravel", "Symfony"]],
+  ["Languages", ["Arabic, native", "French, fluent", "English, fluent", "German, basic", "Spanish, basic"]],
   ["Also on my record", ["Java", "Spring Boot", "Python", "SQL", "Docker", "Jenkins", "Unreal Engine", "Office"]],
 ];
 
@@ -245,6 +265,87 @@ function Count({ to, label, plus }) {
   return <div ref={ref} className="stat rv"><strong>{v}{plus ? "+" : ""}</strong><span>{label}</span></div>;
 }
 
+const GRAPH = [
+  ["al", 400, 180, ["AL", "The language behind every extension I write: tables, pages, codeunits and events."], ["AL", "Le langage de chaque extension que j’écris : tables, pages, codeunits et événements."]],
+  ["cal", 220, 300, ["C/AL", "Classic NAV code. I read it fluently and move it forward."], ["C/AL", "Le code NAV classique. Je le lis couramment et je le fais évoluer."]],
+  ["api", 240, 100, ["API pages", "REST and OData endpoints that expose Business Central to other apps."], ["Pages API", "Points d’accès REST et OData qui exposent Business Central aux autres applications."]],
+  ["ext", 180, 190, ["External APIs", "Consumed from AL and C/AL, with data mapped and posted into Business Central and NAV."], ["API externes", "Consommées depuis AL et C/AL, avec données transformées et publiées dans Business Central et NAV."]],
+  ["inv", 560, 90, ["E-invoicing", "Accounting documents turned into structured XML files for external platforms."], ["E-invoicing", "Documents comptables transformés en fichiers XML structurés pour des plateformes externes."]],
+  ["rep", 560, 290, ["Reports", "RDLC and dataset work, from NAV 2018 to current versions."], ["États", "RDLC et datasets, de NAV 2018 aux versions actuelles."]],
+  ["mig", 400, 320, ["Upgrades", "Navision to Business Central, with code adapted and data integrity checked."], ["Mises à niveau", "De Navision vers Business Central, avec code adapté et intégrité des données contrôlée."]],
+  ["web", 70, 110, ["React and Node", "ERP-web interfaces, dashboards and backends on top of Business Central data."], ["React et Node", "Interfaces ERP-web, tableaux de bord et backends sur les données Business Central."]],
+  ["srv", 70, 240, ["Servers", "Windows Server, IIS, SSL and PM2 for on-premises and web deployments."], ["Serveurs", "Windows Server, IIS, SSL et PM2 pour les déploiements on-premise et web."]],
+  ["fleet", 700, 250, ["Fleet", "Vehicles, tyres, fuel and maintenance tracking for transport clients."], ["Flotte", "Véhicules, pneus, carburant et entretien pour des clients du transport."]],
+  ["buy", 660, 150, ["Purchasing", "Pricing, free-quantity rules, request lines and workflows."], ["Achats", "Tarifs, règles de quantités gratuites, lignes de demande et workflows."]],
+];
+const EDGES = [["al", "api"], ["al", "inv"], ["al", "fleet"], ["al", "buy"], ["al", "rep"], ["al", "mig"], ["al", "cal"], ["cal", "mig"], ["api", "ext"], ["api", "web"], ["api", "inv"], ["web", "srv"], ["mig", "srv"]];
+
+function SkillGraph() {
+  const { u, lang } = useContext(Ctx);
+  const [sel, setSel] = useState("al");
+  const L = lang === "fr" ? 4 : 3;
+  const N = (id) => GRAPH.find((n) => n[0] === id);
+  const lit = (id) => id === sel || EDGES.some(([a, b]) => (a === sel && b === id) || (b === sel && a === id));
+  const cur = N(sel);
+  return (
+    <section id="graph" className="sec">
+      <h2 className="rv">{u.graphH}</h2>
+      <p className="sub rv">{u.graphSub}</p>
+      <div className="graph rv">
+        <svg viewBox="0 0 780 400" role="group" aria-label={u.graphH}>
+          {EDGES.map(([a, b]) => (<line key={a + b} x1={N(a)[1]} y1={N(a)[2]} x2={N(b)[1]} y2={N(b)[2]} className={a === sel || b === sel ? "e lit" : "e"} />))}
+          {GRAPH.map((n) => (
+            <g key={n[0]} className={"node" + (n[0] === sel ? " sel" : "") + (lit(n[0]) ? "" : " dim")} transform={`translate(${n[1]} ${n[2]})`} tabIndex="0" role="button"
+              onClick={() => { setSel(n[0]); beep(600, .05); }} onKeyDown={(e) => e.key === "Enter" && setSel(n[0])}>
+              <circle r={n[0] === sel ? 32 : 24} />
+              <text y={(n[0] === sel ? 32 : 24) + 18} textAnchor="middle">{n[L][0]}</text>
+            </g>
+          ))}
+        </svg>
+        <div className="ginfo" key={sel + lang}><h3>{cur[L][0]}</h3><p>{cur[L][1]}</p></div>
+      </div>
+    </section>
+  );
+}
+
+function Terminal({ onClose }) {
+  const [log, setLog] = useState(["Ahmed OS 3.0. Type help. Press Esc to leave."]);
+  const [v, setV] = useState("");
+  const ref = useRef(), end = useRef();
+  useEffect(() => ref.current.focus(), []);
+  useEffect(() => { if (end.current) end.current.scrollIntoView(); }, [log]);
+  const m = (new Date().getFullYear() - 2023) * 12 + new Date().getMonth() - 6;
+  const CMD = {
+    help: ["help, al build, whoami, stats, skills, coffee, clear, exit"],
+    "al build": ["Compiling Ahmed Maiez...", "✔ 0 errors, 0 warnings", "✔ 30+ API pages published", "✔ 5+ on-premises servers up", "✔ E-invoicing XML validated", "Build succeeded. Coffee level: critical."],
+    whoami: ["Ahmed Dhia Eddine Maiez, Business Central consultant, Tunisia"],
+    stats: [`experience: ${Math.floor(m / 12)} yr ${m % 12} mo`, "api pages: 30+", "servers set up: 5+", "migrations: Navision to Business Central", "bugs: only undocumented features"],
+    skills: ["AL, C/AL, OData, REST, SOAP, RDLC, React, Node.js, MongoDB, IIS, PM2"],
+    coffee: ["Brewing...", "Tunisian coffee, strong. Ready."],
+  };
+  const run = (e) => {
+    e.preventDefault();
+    const c = v.trim().toLowerCase();
+    setV(""); beep(420, .03);
+    if (c === "exit") return onClose();
+    if (c === "clear") return setLog([]);
+    setLog((l) => [...l, "> " + v, ...(CMD[c] || (c ? [`Error: '${c}' is not recognized. Did you mean 'help'?`] : []))]);
+  };
+  return (
+    <div className="term" role="dialog" aria-label="Terminal">
+      <button className="x" onClick={onClose} aria-label="Close">×</button>
+      <div className="out">{log.map((l, i) => <div key={i}>{l}</div>)}<div ref={end} /></div>
+      <form onSubmit={run}><span>&gt;</span><input ref={ref} value={v} onChange={(e) => setV(e.target.value)} aria-label="command" spellCheck="false" autoComplete="off" /></form>
+    </div>
+  );
+}
+
+function Booking() {
+  const { u } = useContext(Ctx);
+  const href = BOOKING_URL || LINKS.whatsapp.replace("text=Hi", "text=" + encodeURIComponent(u.bookMsg));
+  return (<a className="book rv" href={href} target="_blank" rel="noreferrer"><FiCalendar /><span><strong>{u.book}</strong><small>{u.bookSub}</small></span></a>);
+}
+
 function experience(u) {
   const now = new Date();
   const m = (now.getFullYear() - 2023) * 12 + now.getMonth() - 6;
@@ -274,7 +375,20 @@ function TellMe({ onClose, onAction }) {
 
 function Hero() {
   const [s, setS] = useState("open");
-  const { u, d } = useContext(Ctx);
+  const { u, d, lang } = useContext(Ctx);
+  const BASE = ["AL-EXT", "API-PG", "RDLC", "REACT", "COFFEE"];
+  const [rows, setRows] = useState(BASE);
+  const [qty, setQty] = useState({});
+  const [no, setNo] = useState(0);
+  const q = (k) => qty[k] ?? (k === "COFFEE" ? 3 : 1);
+  const cat = d.CATALOG;
+  const add = () => { const n = cat.find((c) => !rows.includes(c[1])); if (n) { setRows([...rows, n[1]]); beep(660); } };
+  const step = (k, dl) => { setQty({ ...qty, [k]: Math.max(1, q(k) + dl) }); beep(dl > 0 ? 700 : 500, .04); };
+  const rm = (k) => { setRows(rows.filter((r) => r !== k)); beep(300, .05); };
+  const tryPost = () => { if (rows.includes("COFFEE") && q("COFFEE") > 5) { setErr(u.stock); beep(180, .2); } else setS("confirm"); };
+  const doPost = () => { setNo(100000 + Math.floor(Math.random() * 900000)); setS("posted"); beep(880, .12); vibe(); };
+  const again = () => { setS("open"); setRows(BASE); setQty({}); };
+  const cv = process.env.PUBLIC_URL + (lang === "fr" ? "/CV-Ahmed-Maiez-FR.pdf" : "/CV-Ahmed-Maiez-EN.pdf");
   const [err, setErr] = useState(false);
   const posted = s === "posted";
   return (
@@ -282,11 +396,12 @@ function Hero() {
       <p className="hello">{u.hello}</p>
       <h1>{u.h1}</h1>
       <p className="lede">{u.lede}</p>
+      <div className="cta"><a className="cta-main" href="#contact">{u.hire}</a><a className="cta-ghost" href={cv} download><FiDownload /> {u.cv}</a></div>
 
       <div className="page">
         <div className="page-main">
           <div className="page-head">
-            <h2>{u.inv}</h2>
+            <h2>{u.inv}{posted ? " " + no : ""}</h2>
             <span className={"status " + (posted ? "posted" : "")}>{posted ? u.posted : u.open}</span>
           </div>
           <dl className="fields">
@@ -294,15 +409,26 @@ function Hero() {
             <div><dt>{u.sales}</dt><dd>Ahmed Maiez</dd></div>
           </dl>
           <div className="actions">
-            <button className="primary" disabled={posted} onClick={() => setS("confirm")}>{u.post}</button>
-            <button onClick={() => setErr(true)}>{u.del}</button>
-            {posted && <button onClick={() => go("contact")}>{u.openPosted}</button>}
+            <button className="primary" disabled={posted} onClick={tryPost}>{u.post}</button>
+            <button onClick={() => { setErr(u.delMsg); beep(180, .15); }}>{u.del}</button>
+            <button disabled={posted || rows.length >= cat.length} onClick={add}>{u.addLine}</button>
+            {posted && <><button onClick={() => go("contact")}>{u.openPosted}</button><button onClick={again}>{u.again}</button></>}
           </div>
           <div className="tablewrap">
             <table>
-              <thead><tr>{u.th.map((h, k) => <th key={h} className={k === 3 ? "n" : ""}>{h}</th>)}</tr></thead>
+              <thead><tr>{u.th.map((h, k) => <th key={h} className={k === 3 ? "n" : ""}>{h}</th>)}<th /></tr></thead>
               <tbody>
-                {d.LINES.map((l, i) => (<tr key={l[1]} style={{ "--i": i }}>{l.map((c, j) => <td key={j} className={j === 3 ? "n" : ""}>{c}</td>)}</tr>))}
+                {rows.map((k, i) => {
+                  const c = cat.find((x) => x[1] === k);
+                  return (
+                    <tr key={k} style={{ "--i": i }}>
+                      <td>{c[0]}</td><td>{k}</td><td>{c[2]}</td>
+                      <td className="n"><span className="step"><button aria-label="-" disabled={posted} onClick={() => step(k, -1)}>−</button><b>{q(k)}</b><button aria-label="+" disabled={posted} onClick={() => step(k, 1)}>+</button></span></td>
+                      <td>{c[3]}</td>
+                      <td><button className="rm" aria-label={u.del} disabled={posted} onClick={() => rm(k)}>×</button></td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
             {posted && <div className="stamp" aria-hidden="true">Posted</div>}
@@ -323,13 +449,13 @@ function Hero() {
       {s === "confirm" && (
         <div className="scrim"><div className="dialog" role="dialog" aria-modal="true">
           <p>{u.confirm}</p>
-          <div><button className="primary" autoFocus onClick={() => setS("posted")}>{u.yes}</button><button onClick={() => setS("open")}>{u.no}</button></div>
+          <div><button className="primary" autoFocus onClick={doPost}>{u.yes}</button><button onClick={() => setS("open")}>{u.no}</button></div>
         </div></div>
       )}
       {err && (
         <div className="scrim"><div className="dialog error" role="alertdialog" aria-modal="true">
           <h3>{u.error}</h3>
-          <p>{u.delMsg}</p>
+          <p>{err}</p>
           <div><button className="primary" autoFocus onClick={() => setErr(false)}>OK</button></div>
         </div></div>
       )}
@@ -338,7 +464,7 @@ function Hero() {
           {Array.from({ length: 28 }, (_, i) => <i key={i} style={{ "--x": (i * 37) % 100, "--r": (i * 53) % 360 + "deg", "--d": i * 35 + "ms", "--c": ["#FFB81C", "#0F7C8A", "#2A9D63", "#C4314B"][i % 4] }} />)}
         </div>
       )}
-      {posted && <p className="toast" role="status">{u.toast}</p>}
+      {posted && <p className="toast" role="status">{u.toast(no)}</p>}
     </header>
   );
 }
@@ -346,13 +472,21 @@ function Hero() {
 function Ledger() {
   const [open, setOpen] = useState(0);
   const { u, d } = useContext(Ctx);
+  const [fl, setFl] = useState("all");
+  const list = d.LEDGER.filter((e) => fl === "all" || e.k === fl);
+  const cnt = (k) => (k === "all" ? d.LEDGER.length : d.LEDGER.filter((e) => e.k === k).length);
   return (
     <section id="ledger" className="sec">
       <h2 className="rv">{u.ledgerH}</h2>
       <p className="sub">{u.ledgerSub}</p>
+      <div className="cues rv">
+        {[["all", u.cAll], ["work", u.cWork], ["edu", u.cEdu], ["project", u.cProj], ["intern", u.cInt]].map(([k, l]) => (
+          <button key={k} className={"cue" + (fl === k ? " on" : "")} onClick={() => { setFl(k); setOpen(-1); }}><strong>{cnt(k)}</strong><span>{l}</span></button>
+        ))}
+      </div>
       <div className="ledger rv">
-        {d.LEDGER.map((e, i) => (
-          <div key={i} className={"entry " + (open === i ? "show" : "")}>
+        {list.map((e, i) => (
+          <div key={fl + i} className={"entry pop " + (open === i ? "show" : "")}>
             <button className="row" aria-expanded={open === i} onClick={() => setOpen(open === i ? -1 : i)}>
               <span className="d">{e.date}</span>
               <span className="t"><strong>{e.title}</strong><small>{e.type}</small></span>
@@ -381,7 +515,7 @@ const UI = {
     envL: "Environments", env: "Cloud and on-premises", langsL: "Languages of code",
     confirm: "Do you want to post the invoice?", yes: "Yes", no: "No", error: "Error",
     delMsg: "You cannot delete this profile because it is used on open entries. Try posting it instead.",
-    toast: "The invoice was successfully posted. Welcome to the team.", oops: "The Coffee field must have a value in Developer. Fill it in before continuing.",
+    toast: (n) => `Posted Sales Invoice ${n}. Welcome to the team, Ahmed.`, oops: "The Coffee field must have a value in Developer. Fill it in before continuing.",
     st1: "years with Business Central", st2: "REST API pages built", st3: "on-premises servers set up", st4: "Business Central version migrated to",
     buildH: "What I build", codeH: "How I write AL", codeSub: "Illustrative sketches in the style of what I ship. Not client code.", copy: "Copy", copied: "Copied",
     bcH: "Business Central work", bcSub: "Things I have built and run for clients. Names stay private, the problems do not.",
@@ -390,7 +524,11 @@ const UI = {
     contactH: "Let’s post something together.", contactSub: "Tell me about your Business Central project. I reply fast.",
     formT: "New request", fName: "Your name", fMail: "Your email", fMsg: "What do you need?", fSend: "Post request", fSending: "Posting…",
     fSent: "Request posted. I will get back to you soon.", fErr: "Could not post the request. Please try WhatsApp or LinkedIn below.", or: "Or reach me directly",
-    hire: "Contact me", psst: "Psst: ↑ ↑ ↓ ↓ ← → ← → B A", cheat: "Cheat code accepted. Ahmed gains +10,000 reputation points.",
+    hire: "Hire me", addLine: "Add line", again: "Post another", stock: "The inventory of COFFEE is insufficient. Reduce the quantity before posting.",
+    cv: "Download CV", cvEn: "CV (English)", cvFr: "CV (Français)", cAll: "All entries", cWork: "Work", cEdu: "Education", cProj: "Final projects", cInt: "Internships",
+    book: "Book a 20-minute call", bookSub: "Pick a time and tell me what you need.", bookMsg: "Hi Ahmed, I would like to book a 20-minute call.",
+    graphH: "How it all connects", graphSub: "Click a node to see what it touches.",
+    nHome: "Home", nWork: "Work", nCode: "Code", nProj: "Projects", nContact: "Contact", termHint: "Tip: press ` to open the terminal.", mail: "Email", psst: "Psst: ↑ ↑ ↓ ↓ ← → ← → B A", cheat: "Cheat code accepted. Ahmed gains +10,000 reputation points.",
   },
   fr: {
     tell: "Dites-moi ce que vous voulez faire", none: (q) => `Aucun résultat pour « ${q} ». Essayez « projets », ou embauchez Ahmed : il est doué pour trouver des choses.`,
@@ -402,7 +540,7 @@ const UI = {
     envL: "Environnements", env: "Cloud et on-premise", langsL: "Langages",
     confirm: "Voulez-vous comptabiliser la facture ?", yes: "Oui", no: "Non", error: "Erreur",
     delMsg: "Vous ne pouvez pas supprimer ce profil car il est utilisé dans des écritures ouvertes. Essayez plutôt de le comptabiliser.",
-    toast: "La facture a été comptabilisée avec succès. Bienvenue dans l’équipe.", oops: "Le champ Café doit contenir une valeur dans Développeur. Renseignez-le avant de continuer.",
+    toast: (n) => `Facture vente n° ${n} comptabilisée. Bienvenue dans l’équipe, Ahmed.`, oops: "Le champ Café doit contenir une valeur dans Développeur. Renseignez-le avant de continuer.",
     st1: "ans sur Business Central", st2: "pages API REST développées", st3: "serveurs on-premise installés", st4: "version de Business Central migrée",
     buildH: "Ce que je construis", codeH: "Comment j’écris de l’AL", codeSub: "Exemples illustratifs dans le style de ce que je livre. Pas du code client.", copy: "Copier", copied: "Copié",
     bcH: "Travaux Business Central", bcSub: "Ce que j’ai construit et déployé pour des clients. Les noms restent privés, pas les problèmes.",
@@ -411,7 +549,11 @@ const UI = {
     contactH: "Comptabilisons quelque chose ensemble.", contactSub: "Parlez-moi de votre projet Business Central. Je réponds vite.",
     formT: "Nouvelle demande", fName: "Votre nom", fMail: "Votre e-mail", fMsg: "De quoi avez-vous besoin ?", fSend: "Envoyer la demande", fSending: "Envoi…",
     fSent: "Demande envoyée. Je reviens vers vous très vite.", fErr: "Envoi impossible. Essayez WhatsApp ou LinkedIn ci-dessous.", or: "Ou contactez-moi directement",
-    hire: "Me contacter", psst: "Psst : ↑ ↑ ↓ ↓ ← → ← → B A", cheat: "Code triche accepté. Ahmed gagne +10 000 points de réputation.",
+    hire: "Me recruter", addLine: "Ajouter une ligne", again: "En comptabiliser une autre", stock: "Le stock de CAFE est insuffisant. Réduisez la quantité avant de comptabiliser.",
+    cv: "Télécharger mon CV", cvEn: "CV (English)", cvFr: "CV (Français)", cAll: "Toutes", cWork: "Postes", cEdu: "Formations", cProj: "Projets de fin d’études", cInt: "Stages",
+    book: "Réserver un appel de 20 minutes", bookSub: "Choisissez un créneau et dites-moi ce dont vous avez besoin.", bookMsg: "Bonjour Ahmed, je voudrais réserver un appel de 20 minutes.",
+    graphH: "Comment tout se relie", graphSub: "Cliquez sur un nœud pour voir ce qu’il touche.",
+    nHome: "Accueil", nWork: "Travaux", nCode: "Code", nProj: "Projets", nContact: "Contact", termHint: "Astuce : appuyez sur ` pour ouvrir le terminal.", mail: "E-mail", psst: "Psst : ↑ ↑ ↓ ↓ ← → ← → B A", cheat: "Code triche accepté. Ahmed gagne +10 000 points de réputation.",
   },
 };
 
@@ -424,10 +566,26 @@ const FR_TILES = [
   ["Front-ends web", "Applications React et Node connectées à Business Central, de la commande à la facturation."],
 ];
 
+const CAT_EN = [
+  ["Item", "AL-EXT", "Extensions and event subscribers", "Project"], ["Item", "API-PG", "API pages and web services", "Project"],
+  ["Item", "RDLC", "Reports that survive layout changes", "Project"], ["Resource", "REACT", "Front ends that talk to Business Central", "Project"],
+  ["Item", "COFFEE", "Tunisian coffee, strong", "Cup"], ["Item", "E-INV", "E-invoicing and XML files", "Project"],
+  ["Item", "MIGR", "Navision to Business Central migration", "Project"], ["Item", "EXT-API", "External API integration", "Project"],
+  ["Resource", "SERVER", "Server setup: IIS, SSL, PM2", "Server"], ["Resource", "TRAIN", "User training", "Day"],
+];
+const CAT_FR = [
+  ["Article", "AL-EXT", "Extensions et abonnés aux événements", "Projet"], ["Article", "API-PG", "Pages API et web services", "Projet"],
+  ["Article", "RDLC", "États qui résistent aux changements de mise en page", "Projet"], ["Ressource", "REACT", "Front-ends qui dialoguent avec Business Central", "Projet"],
+  ["Article", "COFFEE", "Café tunisien, bien serré", "Tasse"], ["Article", "E-INV", "E-invoicing et fichiers XML", "Projet"],
+  ["Article", "MIGR", "Migration de Navision vers Business Central", "Projet"], ["Article", "EXT-API", "Intégration d’API externe", "Projet"],
+  ["Ressource", "SERVER", "Installation serveur : IIS, SSL, PM2", "Serveur"], ["Ressource", "TRAIN", "Formation des utilisateurs", "Jour"],
+];
+
 const DATA = {
-  en: { TILES, LINES, LEDGER, PROJECTS, BCWORK, TOOLS, COMMANDS },
+  en: { TILES, LINES, LEDGER, PROJECTS, BCWORK, TOOLS, COMMANDS, CATALOG: CAT_EN },
   fr: {
     TILES: FR_TILES.map((x, i) => [...x, TILES[i][2]]),
+    CATALOG: CAT_FR,
     LINES: [
       ["Article", "AL-EXT", "Extensions et abonnés aux événements", "1", "Projet"],
       ["Article", "API-PG", "Pages API et web services", "1", "Projet"],
@@ -437,14 +595,19 @@ const DATA = {
     ],
     LEDGER: mix(LEDGER, [
       { date: "Juil. 2023 à aujourd’hui", type: "Poste", title: "Consultant Business Central", place: "Smart Business Solution, Tunis", more: [
-        "Champs personnalisés et extensions de pages, dont la génération automatique de lignes d’achat à partir des quantités gratuites.",
-        "Procédures de codeunits pour la consommation de carburant selon le type de véhicule et le kilométrage.",
-        "Datasets d’états enrichis de champs et filtres à sélection multiple pour les rapports de trajets.",
-        "Intégrations qui consomment des API externes et publient leurs données dans Business Central et NAV."] },
-      { date: "2023", type: "Formation", title: "Diplôme d’ingénieur, développement web", place: "ESPRIT, Tunis", more: ["Projets en MERN, Symfony, JavaFX et une chaîne DevOps complète."] },
+        "Solutions sur mesure pour les achats et les ventes : tarifs, règles de quantités gratuites, lignes de demande et workflows.",
+        "Classification et cartographie multi-niveaux des articles pour une navigation simplifiée.",
+        "Fonctionnalités flotte et transport : suivi opérationnel, reporting, données véhicules et logique carburant.",
+        "Intégrations REST et OData qui consomment des API externes et publient leurs données dans Business Central et NAV, dont les données constructeurs automobiles.",
+        "E-invoicing et e-reporting : documents comptables, fichiers XML structurés et plateformes externes.",
+        "Migrations de Navision vers Business Central avec adaptation du code et contrôle de l’intégrité des données, en multi-sociétés et multi-environnements.",
+        "Interfaces ERP-web en React, Node.js et MongoDB, déployées sur Windows Server avec PM2.",
+        "Formation des utilisateurs, maintenance corrective et évolutive."] },
+      { date: "2020 à 2023", type: "Formation", title: "Diplôme d’ingénieur, développement web", place: "ESPRIT, Tunis", more: ["Diplômé avec la mention Très Bien.", "Projets en MERN, Symfony, JavaFX et une chaîne DevOps complète."] },
       { date: "Janv. à juin 2023", type: "Projet de fin d’études", title: "Plateforme web connectée à Business Central", place: "Smart Business Solution, Tunis", more: ["Commande et facturation de ventes depuis le web, synchronisées avec l’ERP."] },
       { date: "Juil. à sept. 2022", type: "Stage", title: "Application de gestion des tâches et ressources", place: "Tunisia Smart Technoparks, Tunis", more: ["Réalisée pour la municipalité de Ras Jebel."] },
       { date: "Janv. à juin 2020", type: "Projet de fin d’études", title: "Réalité mixte avec Unreal Engine 4", place: "DigiArt LivingLab, Nabeul", more: ["Solution AR et VR pour les enfants autistes et leurs parents."] },
+      { date: "2017 à 2020", type: "Formation", title: "Technicien supérieur en développement logiciel", place: "ISET Nabeul", more: ["Diplômé avec la mention Très Bien."] },
       { date: "Janv. à févr. 2019", type: "Stage", title: "Serious game : Garbage Collector en Java", place: "DigiArt LivingLab, Nabeul", more: ["Apprentissage ludique de la mémoire en Java."] },
       { date: "Janv. 2018", type: "Stage", title: "Stage d’initiation", place: "STB Bank, Ras Jebel", more: [] },
       { date: "2017", type: "Formation", title: "Baccalauréat en sciences techniques", place: "Lycée Mohamed Ali Ennabi, Ras Jebel", more: [] },
@@ -463,18 +626,20 @@ const DATA = {
       ["Migration de la version 17 vers la 25", "Mise à niveau", ["Mise à niveau on-premise vers le Business Central actuel", "Personnalisations reportées vers la nouvelle version"], ["Mise à niveau", "AL", "On-premise"]],
       ["État RDLC multi-sections", "Reporting", ["Conçu sur NAV 2018 en C/AL", "Réceptions fournisseur, factures et écritures non rapprochées dans un seul état"], ["RDLC", "C/AL", "NAV 2018"]],
       ["Installation on-premise et cloud", "Infrastructure", ["Plus de 5 serveurs on-premise installés", "Certificats, authentification, IIS et service tiers", "Extensions livrées aussi sur des tenants cloud"], ["IIS", "SSL", "Cloud", "On-premise"]],
+      ["E-invoicing et e-reporting", "Conformité", ["Documents comptables transformés en fichiers XML structurés", "Interfaçage avec des plateformes externes"], ["XML", "AL", "E-invoicing"]],
       ["Intégrations d’API externes", "Intégration", ["Consommation d’API REST externes depuis AL et C/AL", "Publication des données reçues dans Business Central et NAV", "Utilisé en cloud et en on-premise"], ["REST", "AL", "C/AL"]],
       ["Améliorations du module Achats", "Processus", ["Corrections issues d’un rapport d’audit client", "Lignes d’achat générées à partir des quantités gratuites"], ["AL", "Achats"]],
     ],
     TOOLS: [
-      ["Business Central", ["AL", "C/AL", "Pages API", "REST et SOAP", "États RDLC", "Extensions et événements", "Mises à niveau", "API externes", "Cloud et on-premise", "IIS et SSL"]],
+      ["Business Central", ["AL", "C/AL", "Pages API", "REST et SOAP", "États RDLC", "Extensions et événements", "Mises à niveau", "API externes", "OData", "E-invoicing et XML", "Cloud et on-premise", "IIS, SSL et PM2"]],
       ["Web", ["React", "Node.js", "MongoDB", "JavaScript", "TypeScript", "HTML et CSS", "Angular", "Laravel", "Symfony"]],
+      ["Langues", ["Arabe, langue maternelle", "Français, courant", "Anglais, courant", "Allemand, notions", "Espagnol, notions"]],
       ["Aussi à mon actif", ["Java", "Spring Boot", "Python", "SQL", "Docker", "Jenkins", "Unreal Engine", "Office"]],
     ],
     COMMANDS: [
       ["Ce que je construis", "build"], ["Code AL", "code"], ["Exécuter une codeunit", "code"], ["Travaux Business Central", "bcwork"],
       ["Expérience", "ledger"], ["Projets", "projects"], ["Contacter Ahmed", "contact"], ["Embaucher Ahmed", "contact"],
-      ["Comptabiliser une facture vente", "top"], ["Boîte à outils", "toolbox"], ["Changer de thème", "@theme"], ["Afficher une erreur", "@error"],
+      ["Comptabiliser une facture vente", "top"], ["Boîte à outils", "toolbox"], ["Changer de thème", "@theme"], ["Afficher une erreur", "@error"], ["Ouvrir le terminal", "@term"],
     ],
   },
 };
@@ -520,6 +685,9 @@ function AppInner() {
   const [prog, setProg] = useState(0);
   const [oops, setOops] = useState(false);
   const [f, setF] = useState("All");
+  const [term, setTerm] = useState(false);
+  const [snd, setSnd] = useState(false);
+  useEffect(() => { sfx.on = snd; }, [snd]);
   const [party, setParty] = useState(false);
   useEffect(() => {
     const seq = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
@@ -543,18 +711,18 @@ function AppInner() {
     try { localStorage.setItem("theme", theme); } catch (e) {}
   }, [theme]);
   const flip = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
-  const act = (a) => (a === "@theme" ? flip() : setOops(true));
+  const act = (a) => (a === "@theme" ? flip() : a === "@term" ? setTerm(true) : setOops(true));
   useEffect(() => {
     const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0.12 });
     document.querySelectorAll(".rv").forEach((n) => io.observe(n));
-    const sc = () => { const h = document.documentElement; setProg(h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)); };
+    const sc = () => { const h = document.documentElement; setProg(h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)); h.style.setProperty("--sy", h.scrollTop); };
     const rip = (e) => {
       const el = e.target.closest("button:not(.row),.hire,.clinks a");
       if (!el) return;
       const r = el.getBoundingClientRect(), d = Math.max(r.width, r.height), sp = document.createElement("span");
       sp.className = "ripple";
       sp.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - r.left - d / 2}px;top:${e.clientY - r.top - d / 2}px`;
-      el.appendChild(sp);
+      el.appendChild(sp); beep(520, .03);
       setTimeout(() => sp.remove(), 700);
     };
     window.addEventListener("scroll", sc, { passive: true });
@@ -563,7 +731,8 @@ function AppInner() {
   }, []);
   useEffect(() => {
     const k = (e) => {
-      if (e.key === "Escape") setTell(false);
+      if (e.key === "Escape") { setTell(false); setTerm(false); }
+      if (e.key === "`" && !/INPUT|TEXTAREA/.test(e.target.tagName)) { e.preventDefault(); setTerm(true); }
       if (e.altKey && e.key.toLowerCase() === "q") { e.preventDefault(); setTell(true); }
     };
     window.addEventListener("keydown", k);
@@ -584,11 +753,13 @@ function AppInner() {
       <nav className="bar">
         <a href="#top" className="brand">Ahmed Maiez</a>
         <button className="search" onClick={() => setTell(true)}><AiOutlineSearch /> {u.tell} <kbd>Alt+Q</kbd></button>
+        <button className="mode snd" onClick={() => setSnd(!snd)} aria-label="Sound" aria-pressed={snd}>{snd ? <FiVolume2 /> : <FiVolumeX />}</button>
         <button className="mode lang" onClick={() => setLang(lang === "en" ? "fr" : "en")} aria-label="Language">{lang === "en" ? "FR" : "EN"}</button>
         <button className="mode" onClick={flip} aria-label="Switch theme">{theme === "dark" ? <FiSun /> : <FiMoon />}</button>
         <a className="hire" href="#contact">{u.hire}</a>
       </nav>
       {tell && <TellMe onClose={() => setTell(false)} onAction={act} />}
+      {term && <Terminal onClose={() => setTerm(false)} />}
       {oops && (
         <div className="scrim"><div className="dialog error" role="alertdialog" aria-modal="true">
           <h3>{u.error}</h3>
@@ -611,6 +782,7 @@ function AppInner() {
           </div>
         </section>
         <CodeShow />
+        <SkillGraph />
         <section id="bcwork" className="sec">
           <h2 className="rv">{u.bcH}</h2>
           <p className="sub rv">{u.bcSub}</p>
@@ -641,9 +813,13 @@ function AppInner() {
         <section id="contact" className="sec contact">
           <h2 className="rv">{u.contactH}</h2>
           <p className="sub rv">{u.contactSub}</p>
+          <Booking />
           <ContactForm />
           <p className="or rv">{u.or}</p>
           <div className="clinks rv">
+            <a href={LINKS.email}><FiMail /> {u.mail}</a>
+            <a href={process.env.PUBLIC_URL + "/CV-Ahmed-Maiez-EN.pdf"} download><FiDownload /> {u.cvEn}</a>
+            <a href={process.env.PUBLIC_URL + "/CV-Ahmed-Maiez-FR.pdf"} download><FiDownload /> {u.cvFr}</a>
             <a href={LINKS.linkedin} target="_blank" rel="noreferrer"><AiOutlineLinkedin /> LinkedIn</a>
             <a href={LINKS.whatsapp} target="_blank" rel="noreferrer"><AiOutlineWhatsApp /> WhatsApp</a>
             <a href={LINKS.github} target="_blank" rel="noreferrer"><AiOutlineGithub /> GitHub</a>
@@ -654,7 +830,11 @@ function AppInner() {
       <footer>
         <p>© {new Date().getFullYear()} Ahmed Dhia Eddine Maiez, Ras Jebel, Tunisia</p>
         <p className="psst">{u.psst}</p>
+        <p className="psst">{u.termHint}</p>
       </footer>
+      <nav className="bnav" aria-label="Quick">
+        {[["top", FiHome, u.nHome], ["bcwork", FiBriefcase, u.nWork], ["code", FiCode, u.nCode], ["projects", FiFolder, u.nProj], ["contact", FiMail, u.nContact]].map(([id, I, l]) => (<a key={id} href={"#" + id}><I /><span>{l}</span></a>))}
+      </nav>
       {prog > 0.15 && <a className="totop" href="#top" aria-label="Back to top"><FiArrowUp /></a>}
       {party && <><Confetti /><p className="toast float" role="status">{u.cheat}</p></>}
     </>
