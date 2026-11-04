@@ -390,7 +390,7 @@ const UI = {
     contactH: "Let’s post something together.", contactSub: "Tell me about your Business Central project. I reply fast.",
     formT: "New request", fName: "Your name", fMail: "Your email", fMsg: "What do you need?", fSend: "Post request", fSending: "Posting…",
     fSent: "Request posted. I will get back to you soon.", fErr: "Could not post the request. Please try WhatsApp or LinkedIn below.", or: "Or reach me directly",
-    hire: "Hire me", psst: "Psst: ↑ ↑ ↓ ↓ ← → ← → B A", cheat: "Cheat code accepted. Ahmed gains +10,000 reputation points.",
+    hire: "Contact me", psst: "Psst: ↑ ↑ ↓ ↓ ← → ← → B A", cheat: "Cheat code accepted. Ahmed gains +10,000 reputation points.",
   },
   fr: {
     tell: "Dites-moi ce que vous voulez faire", none: (q) => `Aucun résultat pour « ${q} ». Essayez « projets », ou embauchez Ahmed : il est doué pour trouver des choses.`,
@@ -411,7 +411,7 @@ const UI = {
     contactH: "Comptabilisons quelque chose ensemble.", contactSub: "Parlez-moi de votre projet Business Central. Je réponds vite.",
     formT: "Nouvelle demande", fName: "Votre nom", fMail: "Votre e-mail", fMsg: "De quoi avez-vous besoin ?", fSend: "Envoyer la demande", fSending: "Envoi…",
     fSent: "Demande envoyée. Je reviens vers vous très vite.", fErr: "Envoi impossible. Essayez WhatsApp ou LinkedIn ci-dessous.", or: "Ou contactez-moi directement",
-    hire: "Me recruter", psst: "Psst : ↑ ↑ ↓ ↓ ← → ← → B A", cheat: "Code triche accepté. Ahmed gagne +10 000 points de réputation.",
+    hire: "Me contacter", psst: "Psst : ↑ ↑ ↓ ↓ ← → ← → B A", cheat: "Code triche accepté. Ahmed gagne +10 000 points de réputation.",
   },
 };
 
