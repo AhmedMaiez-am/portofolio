@@ -813,7 +813,6 @@ function AppInner() {
         <section id="contact" className="sec contact">
           <h2 className="rv">{u.contactH}</h2>
           <p className="sub rv">{u.contactSub}</p>
-          <Booking />
           <ContactForm />
           <p className="or rv">{u.or}</p>
           <div className="clinks rv">
