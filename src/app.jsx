@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext, createContext } from "react";
 import { AiOutlineLinkedin, AiOutlineWhatsApp, AiOutlineGithub, AiOutlineFacebook, AiOutlineSearch } from "react-icons/ai";
-import { FiMoon, FiSun, FiArrowUp, FiVolume2, FiVolumeX, FiHome, FiBriefcase, FiCode, FiFolder, FiMail, FiDownload, FiCalendar } from "react-icons/fi";
+import { FiMoon, FiSun, FiArrowUp, FiVolume2, FiVolumeX, FiHome, FiBriefcase, FiCode, FiFolder, FiMail, FiDownload, FiPlay, FiHeart, FiTrendingUp } from "react-icons/fi";
 import photo from "./props/profile.webp";
 
 const LINKS = {
@@ -339,6 +339,54 @@ function Terminal({ onClose }) {
   );
 }
 
+function Marquee() {
+  const w = ["Posting Date", "Ledger Entries", "FactBoxes", "Event Subscribers", "Dimensions", "Item Tracking", "OData", "Role Centers", "Page Extensions", "Codeunits", "Job Queue", "XMLports", "Tell Me"];
+  return <div className="marq" aria-hidden="true"><div>{[...w, ...w].map((x, i) => <span key={i}>{x}</span>)}</div></div>;
+}
+
+function Process() {
+  const { u } = useContext(Ctx);
+  return (
+    <section id="process" className="sec">
+      <h2 className="rv">{u.procH}</h2>
+      <p className="sub rv">{u.procSub}</p>
+      <ol className="proc rv">{u.proc.map(([t, d], i) => (<li key={t} style={{ "--i": i }}><span className="num">{i + 1}</span><h3>{t}</h3><p>{d}</p></li>))}</ol>
+    </section>
+  );
+}
+
+function ErrMuseum() {
+  const { u } = useContext(Ctx);
+  const [on, setOn] = useState({});
+  return (
+    <section id="errors" className="sec">
+      <h2 className="rv">{u.errH}</h2>
+      <p className="sub rv">{u.errSub} {u.errHint}</p>
+      <div className="errs">
+        {u.errs.map(([e, t], i) => (
+          <button key={i} className={"flip rv" + (on[i] ? " on" : "")} aria-pressed={!!on[i]} onClick={() => { setOn({ ...on, [i]: !on[i] }); beep(on[i] ? 400 : 640, .05); }}>
+            <span className="fi">
+              <span className="ff"><b>{u.error}</b>{e}</span>
+              <span className="fb">{t}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function OffClock() {
+  const { u } = useContext(Ctx);
+  const I = [FiPlay, FiHeart, FiTrendingUp];
+  return (
+    <section id="off" className="sec">
+      <h2 className="rv">{u.offH}</h2>
+      <div className="offs">{u.off.map(([t, d], i) => { const Ic = I[i]; return (<article key={t} className="off rv"><Ic /><h3>{t}</h3><p>{d}</p></article>); })}</div>
+    </section>
+  );
+}
+
 function experience(u) {
   const now = new Date();
   const m = (now.getFullYear() - 2023) * 12 + now.getMonth() - 6;
@@ -517,9 +565,13 @@ const UI = {
     contactH: "Let’s post something together.", contactSub: "Tell me about your Business Central project. I reply fast.",
     formT: "New request", fName: "Your name", fMail: "Your email", fMsg: "What do you need?", fSend: "Post request", fSending: "Posting…",
     fSent: "Request posted. I will get back to you soon.", fErr: "Could not post the request. Please try WhatsApp or LinkedIn below.", or: "Or reach me directly",
-    hire: "Contact me", addLine: "Add line", again: "Post another", stock: "The inventory of COFFEE is insufficient. Reduce the quantity before posting.",
-    cv: "Download CV", cvEn: "CV (English)", cvFr: "CV (Français)", cAll: "All entries", cWork: "Work", cEdu: "Education", cProj: "Final projects", cInt: "Internships",
-    book: "Book a 20-minute call", bookSub: "Pick a time and tell me what you need.", bookMsg: "Hi Ahmed, I would like to book a 20-minute call.",
+    hire: "Contact me",
+    procH: "How I work", procSub: "Six steps, from the first conversation to the tenth improvement.",
+    proc: [["Listen", "Understand the business process and what the users really do all day."], ["Analyze", "Turn functional needs into a technical design that fits standard Business Central."], ["Build", "AL or C/AL, extensions and events first, so upgrades stay painless."], ["Test", "Walk through the real scenarios with the users, including the awkward ones."], ["Go live", "Deploy on cloud or on-premises, with data checked and servers set up."], ["Support", "Train users, then keep improving: fixes, performance and new needs."]],
+    errH: "Error museum", errSub: "Classic Business Central messages, translated into human.", errHint: "Click a card to flip it.",
+    errs: [["The record in table Item already exists.", "Two items tried to be number 1000. Give one of them a new identity."], ["Another user has modified the record after you retrieved it.", "Someone saved first. Refresh the page and try again, politely."], ["Posting Date is not within your range of allowed posting dates.", "Time travel is restricted. Check the allowed posting period."], ["You cannot delete the customer because there are open entries.", "Money is still in motion. Close the entries first, then delete."], ["You have insufficient quantity of the item on inventory.", "The warehouse says no. Check the stock, or the item tracking."], ["The field No. must have a value. It cannot be zero or empty.", "Fill in the field. It really cannot be empty. Believe me, it tried."]],
+    offH: "Off the clock", off: [["Video games", "Interactive worlds. Debugging, but with a health bar."], ["Animals", "Breeding and caring for animals. Patience training, no posting routine required."], ["Tech watch", "Following new tools and release notes so you do not have to."]], addLine: "Add line", again: "Post another", stock: "The inventory of COFFEE is insufficient. Reduce the quantity before posting.",
+    cv: "Download CV", cvEn: "CV (English)", cvFr: "CV (Français)", cAll: "All entries", cWork: "Work", cEdu: "Education", cProj: "Final projects", cInt: "Internships", 
     graphH: "How it all connects", graphSub: "Click a node to see what it touches.",
     nHome: "Home", nWork: "Work", nCode: "Code", nProj: "Projects", nContact: "Contact", termHint: "Tip: press ` to open the terminal.", mail: "Email", psst: "Psst: ↑ ↑ ↓ ↓ ← → ← → B A", cheat: "Cheat code accepted. Ahmed gains +10,000 reputation points.",
   },
@@ -542,9 +594,13 @@ const UI = {
     contactH: "Comptabilisons quelque chose ensemble.", contactSub: "Parlez-moi de votre projet Business Central. Je réponds vite.",
     formT: "Nouvelle demande", fName: "Votre nom", fMail: "Votre e-mail", fMsg: "De quoi avez-vous besoin ?", fSend: "Envoyer la demande", fSending: "Envoi…",
     fSent: "Demande envoyée. Je reviens vers vous très vite.", fErr: "Envoi impossible. Essayez WhatsApp ou LinkedIn ci-dessous.", or: "Ou contactez-moi directement",
-    hire: "Me Contacter", addLine: "Ajouter une ligne", again: "En comptabiliser une autre", stock: "Le stock de CAFE est insuffisant. Réduisez la quantité avant de comptabiliser.",
-    cv: "Télécharger mon CV", cvEn: "CV (English)", cvFr: "CV (Français)", cAll: "Toutes", cWork: "Postes", cEdu: "Formations", cProj: "Projets de fin d’études", cInt: "Stages",
-    book: "Réserver un appel de 20 minutes", bookSub: "Choisissez un créneau et dites-moi ce dont vous avez besoin.", bookMsg: "Bonjour Ahmed, je voudrais réserver un appel de 20 minutes.",
+    hire: "Me contacter",
+    procH: "Ma façon de travailler", procSub: "Six étapes, de la première conversation à la dixième amélioration.",
+    proc: [["Écouter", "Comprendre le processus métier et ce que les utilisateurs font vraiment toute la journée."], ["Analyser", "Transformer les besoins fonctionnels en conception technique alignée sur le standard Business Central."], ["Développer", "AL ou C/AL, extensions et événements d’abord, pour que les mises à niveau restent simples."], ["Tester", "Parcourir les vrais scénarios avec les utilisateurs, y compris les plus tordus."], ["Mettre en production", "Déployer en cloud ou on-premise, données contrôlées et serveurs installés."], ["Accompagner", "Former les utilisateurs, puis continuer d’améliorer : corrections, performances et nouveaux besoins."]],
+    errH: "Musée des erreurs", errSub: "Messages classiques de Business Central, traduits en langage humain.", errHint: "Cliquez sur une carte pour la retourner.",
+    errs: [["L’enregistrement dans la table Article existe déjà.", "Deux articles voulaient être le numéro 1000. Donnez une nouvelle identité à l’un d’eux."], ["Un autre utilisateur a modifié l’enregistrement après que vous l’avez récupéré.", "Quelqu’un a enregistré avant vous. Actualisez la page et réessayez, poliment."], ["La date comptabilisation n’est pas dans votre plage de dates autorisées.", "Les voyages dans le temps sont restreints. Vérifiez la période autorisée."], ["Vous ne pouvez pas supprimer le client car il existe des écritures ouvertes.", "L’argent circule encore. Clôturez d’abord les écritures, puis supprimez."], ["La quantité en stock de l’article est insuffisante.", "L’entrepôt dit non. Vérifiez le stock, ou la traçabilité."], ["Le champ N° doit avoir une valeur. Il ne peut pas être zéro ou vide.", "Renseignez le champ. Il ne peut vraiment pas rester vide. Croyez-moi, il a essayé."]],
+    offH: "Hors du bureau", off: [["Jeux vidéo", "Des mondes interactifs. Du débogage, mais avec une barre de vie."], ["Animaux", "Élevage et soin des animaux. De la patience, sans routine de comptabilisation."], ["Veille technologique", "Suivre les nouveaux outils et notes de version pour que vous n’ayez pas à le faire."]], addLine: "Ajouter une ligne", again: "En comptabiliser une autre", stock: "Le stock de CAFE est insuffisant. Réduisez la quantité avant de comptabiliser.",
+    cv: "Télécharger mon CV", cvEn: "CV (English)", cvFr: "CV (Français)", cAll: "Toutes", cWork: "Postes", cEdu: "Formations", cProj: "Projets de fin d’études", cInt: "Stages", 
     graphH: "Comment tout se relie", graphSub: "Cliquez sur un nœud pour voir ce qu’il touche.",
     nHome: "Accueil", nWork: "Travaux", nCode: "Code", nProj: "Projets", nContact: "Contact", termHint: "Astuce : appuyez sur ` pour ouvrir le terminal.", mail: "E-mail", psst: "Psst : ↑ ↑ ↓ ↓ ← → ← → B A", cheat: "Code triche accepté. Ahmed gagne +10 000 points de réputation.",
   },
@@ -710,7 +766,7 @@ function AppInner() {
     document.querySelectorAll(".rv").forEach((n) => io.observe(n));
     const sc = () => { const h = document.documentElement; setProg(h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)); h.style.setProperty("--sy", h.scrollTop); };
     const rip = (e) => {
-      const el = e.target.closest("button:not(.row),.hire,.clinks a");
+      const el = e.target.closest("button:not(.row):not(.flip):not(.cue),.hire,.clinks a");
       if (!el) return;
       const r = el.getBoundingClientRect(), d = Math.max(r.width, r.height), sp = document.createElement("span");
       sp.className = "ripple";
@@ -768,14 +824,17 @@ function AppInner() {
           <Count plus to={5} label={u.st3} />
           <Count to={25} label={u.st4} />
         </section>
+        <Marquee />
         <section id="build" className="sec">
           <h2 className="rv">{u.buildH}</h2>
           <div className="tiles">
             {d.TILES.map(([t, d, c]) => (<article key={t} className={"tile rv " + c}><h3>{t}</h3><p>{d}</p></article>))}
           </div>
         </section>
+        <Process />
         <CodeShow />
         <SkillGraph />
+        <ErrMuseum />
         <section id="bcwork" className="sec">
           <h2 className="rv">{u.bcH}</h2>
           <p className="sub rv">{u.bcSub}</p>
@@ -803,6 +862,7 @@ function AppInner() {
             ))}
           </ul>
         </section>
+        <OffClock />
         <section id="contact" className="sec contact">
           <h2 className="rv">{u.contactH}</h2>
           <p className="sub rv">{u.contactSub}</p>
