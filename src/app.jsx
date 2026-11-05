@@ -22,7 +22,6 @@ function beep(f = 520, d = 0.06) {
   } catch (e) {}
 }
 const vibe = () => { if (sfx.on && navigator.vibrate) navigator.vibrate(18); };
-const BOOKING_URL = ""; // paste your Cal.com or Calendly link here
 
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
@@ -338,12 +337,6 @@ function Terminal({ onClose }) {
       <form onSubmit={run}><span>&gt;</span><input ref={ref} value={v} onChange={(e) => setV(e.target.value)} aria-label="command" spellCheck="false" autoComplete="off" /></form>
     </div>
   );
-}
-
-function Booking() {
-  const { u } = useContext(Ctx);
-  const href = BOOKING_URL || LINKS.whatsapp.replace("text=Hi", "text=" + encodeURIComponent(u.bookMsg));
-  return (<a className="book rv" href={href} target="_blank" rel="noreferrer"><FiCalendar /><span><strong>{u.book}</strong><small>{u.bookSub}</small></span></a>);
 }
 
 function experience(u) {
